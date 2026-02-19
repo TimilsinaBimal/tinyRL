@@ -1,0 +1,13 @@
+[project]
+name = "tinyrl"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gym>=0.26.2",
+    "gymnasium[box2d,classic-control]>=1.2.3",
+    "ipykernel>=7.1.0",
+    "matplotlib>=3.10.8",
+    "torch>=2.10.0",
+]
