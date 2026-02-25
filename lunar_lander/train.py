@@ -1,7 +1,8 @@
 import gymnasium as gym
-from .nn_policy import NNRewardPolicy
+from .model import LunarLanderPolicy
 import torch
 from shared.figure import plot_and_save_graph
+
 
 def collect_episode(env, policy):
     states = []
@@ -37,7 +38,7 @@ def compute_returns(rewards, gamma=0.99):
     return returns[::-1]  # reverse
 
 
-def update_policy(policy, log_probs, returns, optimizer, average_baseline):
+def update_policy(log_probs, returns, optimizer, average_baseline):
     log_probs = torch.stack(log_probs)
 
     returns = torch.tensor(returns)
@@ -56,11 +57,11 @@ def update_policy(policy, log_probs, returns, optimizer, average_baseline):
 
 
 def main():
-    env = gym.make("CartPole-v1", render_mode="human")
+    env = gym.make("LunarLander-v3", render_mode="human")
 
-    policy = NNRewardPolicy(4, 2)
+    policy = LunarLanderPolicy(8, 4)
 
-    optimizer = torch.optim.Adam(policy.parameters(), lr=1e-2)
+    optimizer = torch.optim.Adam(policy.parameters(), lr=1e-3)
 
     num_episodes = 1000
 
@@ -80,7 +81,7 @@ def main():
         if episode == 0:
             average_baseline = sum(batch_returns) / len(batch_returns)
 
-        loss = update_policy(policy, log_probs, returns, optimizer, average_baseline)
+        loss = update_policy(log_probs, returns, optimizer, average_baseline)
 
         total_reward = sum(rewards)
         all_losses.append(loss)
