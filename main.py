@@ -8,7 +8,12 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--train", action="store_true", help="Run training")
     group.add_argument("--inference", action="store_true", help="Run inference")
-    parser.add_argument("--env", required=True, choices=["cartpole", "lunar_lander"], help="Environment name")
+    parser.add_argument(
+        "--env",
+        required=True,
+        choices=["cartpole", "lunar_lander", "cartpole_td0", "cartpole_mc", "cartpole_tdn"],
+        help="Environment name",
+    )
 
     args = parser.parse_args()
 

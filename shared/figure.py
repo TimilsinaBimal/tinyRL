@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def plot_and_save_graph(losses, rewards, returns, file_path="training.png"):
@@ -15,6 +16,27 @@ def plot_and_save_graph(losses, rewards, returns, file_path="training.png"):
     plt.xlabel("Episode")
     plt.ylabel("Value")
     plt.title("Training Metrics per Episode")
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(file_path, dpi=150)
+    plt.close()
+
+
+def plot_and_save_reward_graph(rewards, file_path="training.png", window=20):
+    plt.figure(figsize=(10, 6))
+    x = range(1, len(rewards) + 1)
+
+    plt.plot(x, rewards, color="tab:orange", linewidth=0.5, alpha=0.35, label="Episode Reward")
+
+    if len(rewards) >= window:
+        avg = np.convolve(rewards, np.ones(window) / window, mode="valid")
+        x_avg = range(window, len(rewards) + 1)
+        plt.plot(x_avg, avg, color="tab:blue", linewidth=2, label=f"Moving Avg ({window} ep)")
+
+    plt.xlabel("Episode")
+    plt.ylabel("Reward")
+    plt.title("Training Reward")
     plt.legend()
     plt.grid(alpha=0.3)
     plt.tight_layout()
