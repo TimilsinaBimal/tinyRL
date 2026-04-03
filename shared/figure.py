@@ -23,22 +23,27 @@ def plot_and_save_graph(losses, rewards, returns, file_path="training.png"):
     plt.close()
 
 
-def plot_and_save_reward_graph(rewards, file_path="training.png", window=20):
-    plt.figure(figsize=(10, 6))
-    x = range(1, len(rewards) + 1)
+def plot_and_save_reward_graph(rewards, file_path="training.png", window=50):
+    """Plot per-episode rewards with a smoothed running average."""
 
-    plt.plot(x, rewards, color="tab:orange", linewidth=0.5, alpha=0.35, label="Episode Reward")
+    fig, ax = plt.subplots(figsize=(10, 5))
 
-    if len(rewards) >= window:
-        avg = np.convolve(rewards, np.ones(window) / window, mode="valid")
-        x_avg = range(window, len(rewards) + 1)
-        plt.plot(x_avg, avg, color="tab:blue", linewidth=2, label=f"Moving Avg ({window} ep)")
+    ax.plot(rewards, alpha=0.3, color="#4C9BE8", linewidth=0.8, label="Episode reward")
 
-    plt.xlabel("Episode")
-    plt.ylabel("Reward")
-    plt.title("Training Reward")
-    plt.legend()
-    plt.grid(alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(file_path, dpi=150)
-    plt.close()
+    # Smoothed curve (window=50)
+    if len(rewards) >= 50:
+        window = 50
+        smoothed = [
+            sum(rewards[max(0, i - window) : i + 1]) / len(rewards[max(0, i - window) : i + 1])
+            for i in range(len(rewards))
+        ]
+        ax.plot(smoothed, color="#E84C4C", linewidth=1.5, label=f"Rolling avg (w={window})")
+
+    ax.set_xlabel("Episode", fontsize=12)
+    ax.set_ylabel("Reward", fontsize=12)
+    ax.set_title("PPO — LunarLander-v3", fontsize=14)
+    ax.legend()
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(file_path, dpi=150)
+    plt.close(fig)

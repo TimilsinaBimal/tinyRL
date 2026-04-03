@@ -91,7 +91,7 @@ def update_critic(critic: ValueNetwork, returns: list, predicted_returns: torch.
 def calculate_advantage_td(reward, current_estimate, next_estimate):
     current_estimate = current_estimate.detach()
     next_estimate = next_estimate.detach()
-    return reward + GAMMA * next_estimate - current_estimate
+    return reward + GAMMA * next_estimate - current_estimate  # also called td error
 
 
 def main():

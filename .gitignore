@@ -73,3 +73,6 @@ logs/
 
 # Data
 data/
+
+# local test files
+*.local.*

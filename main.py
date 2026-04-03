@@ -11,7 +11,7 @@ def main():
     parser.add_argument(
         "--env",
         required=True,
-        choices=["cartpole", "lunar_lander", "cartpole_td0", "cartpole_mc", "cartpole_tdn"],
+        choices=["cartpole", "lunar_lander", "cartpole_td0", "cartpole_mc", "cartpole_tdn", "lunar_lander_ppo"],
         help="Environment name",
     )
 
